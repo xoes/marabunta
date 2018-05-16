@@ -13,7 +13,7 @@ from .model import Migration, MigrationOption, Version, Operation
 YAML_EXAMPLE = u"""
 migration:
   options:
-    # --workers=0 --stop-after-init are automatically added
+    # --workers=0 --stop-after-init --no-xmlrpc are automatically added
     install_command: odoo
     install_args: --log-level=debug
   versions:

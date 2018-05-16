@@ -10,6 +10,8 @@ Unreleased
 
 **Bugfixes**
 
+* Include --no-xmlrpc in comments about autoflags
+
 **Improvements**
 
 * Update psycopg2 to psycopg2-binary
