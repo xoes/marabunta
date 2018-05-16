@@ -7,8 +7,9 @@ from __future__ import print_function
 
 import yaml
 
-from .exception import ParseError
+from .exception import ParseError, ConfigurationError
 from .model import Migration, MigrationOption, Version, Operation
+from .database import Database
 
 YAML_EXAMPLE = u"""
 migration:
@@ -67,20 +68,18 @@ migration:
 
 class YamlParser(object):
 
-    def __init__(self, parsed, config=None):
-        self.parsed = parsed
-        self.config = config or {}
+    def __init__(self, config, parsed=None):
+        self.config = config
+        self.parsed = parsed or None
 
-    @classmethod
-    def parser_from_buffer(cls, fp):
-        """Construct YamlParser from a file pointer."""
-        return cls(yaml.safe_load(fp))
+    def load_from_buffer(self, fp):
+        """Load parsed YAML from a file pointer."""
+        self.parsed = yaml.safe_load(fp)
 
-    @classmethod
-    def parse_from_file(cls, filename):
-        """Construct YamlParser from a filename."""
+    def load_from_file(self, filename):
+        """Load parsed YAML from a filename."""
         with open(filename, 'rU') as fh:
-            return cls.parser_from_buffer(fh)
+            self.load_from_buffer(fh)
 
     def check_dict_expected_keys(self, expected_keys, current, dict_name):
         """ Check that we don't have unknown keys in a dictionary.
@@ -104,6 +103,8 @@ class YamlParser(object):
 
     def parse(self):
         """Check input and return a :class:`Migration` instance."""
+        if not self.parsed:
+            raise ConfigurationError(u"no marabunta yaml supplied")
         if not self.parsed.get('migration'):
             raise ParseError(u"'migration' key is missing", YAML_EXAMPLE)
         self.check_dict_expected_keys(
@@ -122,8 +123,10 @@ class YamlParser(object):
         options = migration.get('options') or {}
         odoo_cmd = self.config.odoo_cmd or options.get('odoo_cmd')
         odoo_args = self.config.odoo_args or options.get('odoo_args') or ''
+        odoo_dsn = Database(self.config).dsn()
         return MigrationOption(odoo_cmd=odoo_cmd,
-                               odoo_args=odoo_args.split())
+                               odoo_args=odoo_args.split(),
+                               odoo_dsn=odoo_dsn)
 
     def _parse_versions(self, migration, options):
         versions = migration.get('versions') or []

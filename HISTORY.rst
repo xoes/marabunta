@@ -18,6 +18,10 @@ Unreleased
   to install one module in one database which in another db
   should be upgraded, place this module in both options.
 
+* Implement odoo database defaults from comand line args.
+  This is a semantic change and also needed some code
+  refactoring to reflect the new role of YamlParser.
+
 **Bugfixes**
 
 * Include --no-xmlrpc in comments about autoflags
