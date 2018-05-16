@@ -12,6 +12,8 @@ Unreleased
 
 * Include --no-xmlrpc in comments about autoflags
 
+* Fix python error in error message in runner.py
+
 **Improvements**
 
 * Update psycopg2 to psycopg2-binary
