@@ -25,8 +25,9 @@ migration:
         post:  # executed after 'addons'
           - anthem songs::install
       addons:
-        upgrade:  # executed as odoo --stop-after-init -i/-u ...
+        upgrade:  # executed with -u flag ...
           - base
+        install:  # executed with -i flag ...
           - document
         # remove:  # uninstalled with a python script
       modes:
@@ -147,13 +148,18 @@ class YamlParser(object):
 
     def _parse_addons(self, version, addons, mode=None):
         self.check_dict_expected_keys(
-            {'upgrade', 'remove'}, addons, 'addons',
+            {'upgrade', 'install', 'remove'}, addons, 'addons',
         )
         upgrade = addons.get('upgrade') or []
         if upgrade:
             if not isinstance(upgrade, list):
                 raise ParseError(u"'upgrade' key must be a list", YAML_EXAMPLE)
             version.add_upgrade_addons(upgrade, mode=mode)
+        install = addons.get('install') or []
+        if install:
+            if not isinstance(install, list):
+                raise ParseError(u"'install' key must be a list", YAML_EXAMPLE)
+            version.add_install_addons(install, mode=mode)
         remove = addons.get('remove') or []
         if remove:
             if not isinstance(remove, list):

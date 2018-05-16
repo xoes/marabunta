@@ -96,6 +96,10 @@ class Version(object):
         version_mode = self._get_version_mode(mode=mode)
         version_mode.add_upgrade_addons(addons)
 
+    def add_install_addons(self, addons, mode=None):
+        version_mode = self._get_version_mode(mode=mode)
+        version_mode.add_install_addons(addons)
+
     def add_remove_addons(self, addons, mode=None):
         version_mode = self._get_version_mode(mode=mode)
         version_mode.add_remove_addons(addons)
@@ -115,24 +119,26 @@ class Version(object):
         version_mode = self._get_version_mode(mode=mode)
         return version_mode.post_operations
 
-    def upgrade_addons_operation(self, addons_state, mode=None):
+    def get_addons_operation(self, addons_state, mode=None):
         """ Return merged set of main addons and mode's addons """
         installed = set(a.name for a in addons_state
                         if a.state in ('installed', 'to upgrade'))
 
         base_mode = self._get_version_mode()
-        addons_list = base_mode.upgrade_addons.copy()
+        addons_upgrade_list = base_mode.upgrade_addons.copy()
+        addons_install_list = base_mode.install_addons.copy()
+        addons_remove_list = base_mode.remove_addons.copy()
         if mode:
             add_mode = self._get_version_mode(mode=mode)
-            addons_list |= add_mode.upgrade_addons
+            addons_upgrade_list |= add_mode.upgrade_addons
+            addons_install_list |= add_mode.install_addons
+            addons_remove_list |= add_mode.remove_addons
 
-        to_install = addons_list - installed
-        to_upgrade = installed & addons_list
+        to_install = addons_install_list - installed
+        to_upgrade = installed & addons_upgrade_list
+        to_remove = installed & addons_remove_list
 
-        return UpgradeAddonsOperation(self.options, to_install, to_upgrade)
-
-    def remove_addons_operation(self):
-        raise NotImplementedError
+        return AddonsOperation(self.options, to_install, to_upgrade, to_remove)
 
     def __repr__(self):
         return u'Version<{}>'.format(self.number)
@@ -145,6 +151,7 @@ class VersionMode(object):
         self.pre_operations = []
         self.post_operations = []
         self.upgrade_addons = set()
+        self.install_addons = set()
         self.remove_addons = set()
 
     def add_pre(self, operation):
@@ -160,6 +167,9 @@ class VersionMode(object):
     def add_upgrade_addons(self, addons):
         self.upgrade_addons.update(addons)
 
+    def add_install_addons(self, addons):
+        self.install_addons.update(addons)
+
     def add_remove_addons(self, addons):
         self.remove_addons.update(addons)
         raise ConfigurationError(
@@ -169,12 +179,13 @@ class VersionMode(object):
         )
 
 
-class UpgradeAddonsOperation(object):
+class AddonsOperation(object):
 
-    def __init__(self, options, to_install, to_upgrade):
+    def __init__(self, options, to_install, to_upgrade, to_remove):
         self.options = options
         self.to_install = set(to_install)
         self.to_upgrade = set(to_upgrade)
+        self.to_remove = set(to_remove)
 
     def operation(self, exclude_addons=None):
         if exclude_addons is None:
@@ -190,6 +201,10 @@ class UpgradeAddonsOperation(object):
         to_upgrade = self.to_upgrade - exclude_addons
         if to_upgrade:
             odoo_args += [u'-u', u','.join(to_upgrade)]
+
+        # to_remove = self.to_remove - exclude_addons
+        # if to_remove:
+        #     odoo_args += [u'-r', u','.join(to_remove)]
 
         if to_install or to_upgrade:
             return Operation([odoo_cmd] + odoo_args)

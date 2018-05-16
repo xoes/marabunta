@@ -177,7 +177,7 @@ class VersionRunner(object):
         module_table = IrModuleModule(self.database)
         addons_state = module_table.read_state()
 
-        upgrade_operation = version.upgrade_addons_operation(
+        upgrade_operation = version.get_addons_operation(
             addons_state,
             mode=self.config.mode
         )

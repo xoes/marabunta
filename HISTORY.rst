@@ -12,6 +12,12 @@ Unreleased
 
 * Rename `install_*` -> `odoo_*` to align with cli naming scheme
 
+* Implement `install` and `upgrade` as separate operations.
+  SEMANTIC CHANGE: install, upgrade does not impicitly install
+  any more. Nor does install, implicitly upgrade. If you need
+  to install one module in one database which in another db
+  should be upgraded, place this module in both options.
+
 **Bugfixes**
 
 * Include --no-xmlrpc in comments about autoflags
