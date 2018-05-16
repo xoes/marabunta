@@ -12,6 +12,8 @@ Unreleased
 
 **Improvements**
 
+* Update psycopg2 to psycopg2-binary
+
 **Documentation**
 
 **Build**
