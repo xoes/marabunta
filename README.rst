@@ -1,8 +1,8 @@
 🐜🐜🐜 Marabunta 🐜🐜🐜
 =======================
 
-.. image:: https://travis-ci.org/camptocamp/marabunta.svg?branch=master
-    :target: https://travis-ci.org/camptocamp/marabunta
+.. image:: https://travis-ci.com/xoes/marabunta.svg?branch=master
+    :target: https://travis-ci.com/xoes/marabunta
 
 Marabunta is a name given to the migration of the legionary ants or to the ants
 themselves. Restless, they eat and digest everything in their way.

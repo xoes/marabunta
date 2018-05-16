@@ -198,7 +198,7 @@ class AddonsOperation(object):
         # DSN dict taken from marabunta's database object
         if self.options.odoo_dsn:
             params = self.options.odoo_dsn
-            odoo_args += [u'--database={}'.format(params['database'])]
+            odoo_args += [u'--database={}'.format(params['dbname'])]
             if 'host' in params:
                 odoo_args += [u'--db_host={}'.format(params['host'])]
             if 'port' in params:

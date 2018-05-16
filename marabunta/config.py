@@ -117,27 +117,27 @@ def get_args_parser():
     )
 
     group_odoo.add_argument('--database', '-d',
-                        action=EnvDefault,
-                        envvar='MARABUNTA_DATABASE',
-                        required=True,
-                        help="Odoo's database")
+                            action=EnvDefault,
+                            envvar='MARABUNTA_DATABASE',
+                            required=True,
+                            help="Odoo's database")
     group_odoo.add_argument('--db-user', '-u',
-                        action=EnvDefault,
-                        envvar='MARABUNTA_DB_USER',
-                        required=True,
-                        help="Odoo's database user")
+                            action=EnvDefault,
+                            envvar='MARABUNTA_DB_USER',
+                            required=True,
+                            help="Odoo's database user")
     group_odoo.add_argument('--db-password', '-w',
-                        action=EnvDefault,
-                        envvar='MARABUNTA_DB_PASSWORD',
-                        required=True,
-                        help="Odoo's database password")
+                            action=EnvDefault,
+                            envvar='MARABUNTA_DB_PASSWORD',
+                            required=True,
+                            help="Odoo's database password")
     group_odoo.add_argument('--db-port', '-p',
-                        default=os.environ.get('MARABUNTA_DB_PORT', 5432),
-                        help="Odoo's database port")
+                            default=os.environ.get('MARABUNTA_DB_PORT', 5432),
+                            help="Odoo's database port")
     group_odoo.add_argument('--db-host', '-H',
-                        default=os.environ.get('MARABUNTA_DB_HOST',
-                                               'localhost'),
-                        help="Odoo's database host")
+                            default=os.environ.get('MARABUNTA_DB_HOST',
+                                                   'localhost'),
+                            help="Odoo's database host")
     group_odoo.add_argument('--odoo-cmd',
                             action=EnvDefault,
                             envvar='MARABUNTA_ODOO_CMD',

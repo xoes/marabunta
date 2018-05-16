@@ -3,8 +3,6 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
 
-import mock
-
 from io import StringIO
 
 from marabunta.config import Config
@@ -13,7 +11,8 @@ from marabunta.parser import YamlParser, YAML_EXAMPLE
 
 def test_parse_yaml_example():
     file_example = StringIO(YAML_EXAMPLE)
-    config = mock.MagicMock(spec=Config)
+    config = Config(None,
+                    'test')
     constructor = YamlParser(config)
     constructor.load_from_buffer(file_example)
     migration = constructor.parse()
