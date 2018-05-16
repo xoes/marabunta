@@ -10,6 +10,8 @@ Unreleased
 
 * Make `install_*` overridable by command line arguments
 
+* Rename `install_*` -> `odoo_*` to align with cli naming scheme
+
 **Bugfixes**
 
 * Include --no-xmlrpc in comments about autoflags

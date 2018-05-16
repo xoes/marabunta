@@ -27,9 +27,9 @@ class Migration(object):
 
 class MigrationOption(object):
 
-    def __init__(self, install_command=None, install_args=None):
-        self.install_command = install_command or u'odoo'
-        self.install_args = install_args or u''
+    def __init__(self, odoo_cmd=None, odoo_args=None):
+        self.odoo_cmd = odoo_cmd or u'odoo'
+        self.odoo_args = odoo_args or u''
 
 
 class Version(object):
@@ -179,20 +179,20 @@ class UpgradeAddonsOperation(object):
     def operation(self, exclude_addons=None):
         if exclude_addons is None:
             exclude_addons = set()
-        install_command = self.options.install_command
-        install_args = self.options.install_args[:] or []
-        install_args += [u'--workers=0', u'--stop-after-init', u'--no-xmlrpc']
+        odoo_cmd = self.options.odoo_cmd
+        odoo_args = self.options.odoo_args[:] or []
+        odoo_args += [u'--workers=0', u'--stop-after-init', u'--no-xmlrpc']
 
         to_install = self.to_install - exclude_addons
         if to_install:
-            install_args += [u'-i', u','.join(to_install)]
+            odoo_args += [u'-i', u','.join(to_install)]
 
         to_upgrade = self.to_upgrade - exclude_addons
         if to_upgrade:
-            install_args += [u'-u', u','.join(to_upgrade)]
+            odoo_args += [u'-u', u','.join(to_upgrade)]
 
         if to_install or to_upgrade:
-            return Operation([install_command] + install_args)
+            return Operation([odoo_cmd] + odoo_args)
         else:
             return Operation('')
 

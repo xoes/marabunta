@@ -18,8 +18,8 @@ class Config(object):
                  mode=None,
                  allow_serie=False,
                  force_version=None,
-                 install_command=None,
-                 install_args=None,
+                 odoo_cmd=None,
+                 odoo_args=None,
                  web_host='localhost',
                  web_port=8069,
                  web_custom_html=None):
@@ -34,8 +34,8 @@ class Config(object):
         self.force_version = force_version
         if force_version and not allow_serie:
             self.allow_serie = True
-        self.install_command = install_command
-        self.install_args = install_args
+        self.odoo_cmd = odoo_cmd
+        self.odoo_args = odoo_args
         self.web_host = web_host
         self.web_port = web_port
         self.web_custom_html = web_custom_html
@@ -58,8 +58,8 @@ class Config(object):
                    mode=args.mode,
                    allow_serie=args.allow_serie,
                    force_version=args.force_version,
-                   install_command=args.install_command,
-                   install_args=args.install_args,
+                   odoo_cmd=args.odoo_cmd,
+                   odoo_args=args.odoo_args,
                    web_host=args.web_host,
                    web_port=args.web_port,
                    web_custom_html=args.web_custom_html,
@@ -138,14 +138,14 @@ def get_args_parser():
         description='Configuration related to odoo server command.',
     )
 
-    group_odoo.add_argument('--install-command',
+    group_odoo.add_argument('--odoo-cmd',
                             action=EnvDefault,
-                            envvar='MARABUNTA_INSTALL_COMMAND',
+                            envvar='MARABUNTA_ODOO_CMD',
                             required=False,
                             help="Odoo's executable")
-    group_odoo.add_argument('--install-args',
+    group_odoo.add_argument('--odoo-args',
                             action=EnvDefault,
-                            envvar='MARABUNTA_INSTALL_ARGS',
+                            envvar='MARABUNTA_ODOO_ARGS',
                             required=False,
                             help="Additional Odoo command arguments. "
                                  "Form: '--log-level=debug' "

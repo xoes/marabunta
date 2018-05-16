@@ -15,8 +15,8 @@ migration:
   options:
     # --workers=0 --stop-after-init --no-xmlrpc are automatically added
     # This options are overriden by corresponding command line arguments
-    install_command: odoo
-    install_args: --log-level=debug
+    odoo_cmd: odoo
+    odoo_args: --log-level=debug
   versions:
     - version: 0.0.1
       operations:
@@ -119,10 +119,10 @@ class YamlParser(object):
 
     def _parse_options(self, migration):
         options = migration.get('options') or {}
-        install_command = self.config.install_command or options.get('install_command')
-        install_args = self.config.install_args or options.get('install_args') or ''
-        return MigrationOption(install_command=install_command,
-                               install_args=install_args.split())
+        odoo_cmd = self.config.odoo_cmd or options.get('odoo_cmd')
+        odoo_args = self.config.odoo_args or options.get('odoo_args') or ''
+        return MigrationOption(odoo_cmd=odoo_cmd,
+                               odoo_args=odoo_args.split())
 
     def _parse_versions(self, migration, options):
         versions = migration.get('versions') or []
