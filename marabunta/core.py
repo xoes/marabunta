@@ -108,6 +108,7 @@ def migrate(config):
     webserver.start()
 
     migration_parser = YamlParser.parse_from_file(config.migration_file)
+    migration_parser.config = config
     migration = migration_parser.parse()
 
     database = Database(config)

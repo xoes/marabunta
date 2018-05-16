@@ -8,6 +8,8 @@ Unreleased
 
 **Features**
 
+* Make `install_*` overridable by command line arguments
+
 **Bugfixes**
 
 * Include --no-xmlrpc in comments about autoflags

@@ -23,6 +23,7 @@ def runner_gen(request):
                         allow_serie=allow_serie,
                         mode=mode)
         migration_parser = YamlParser.parse_from_file(config.migration_file)
+        migration_parser.config = config
         migration = migration_parser.parse()
         table = mock.MagicMock(spec=MigrationTable)
         table.versions.return_value = []

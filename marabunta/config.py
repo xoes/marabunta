@@ -18,6 +18,8 @@ class Config(object):
                  mode=None,
                  allow_serie=False,
                  force_version=None,
+                 install_command=None,
+                 install_args=None,
                  web_host='localhost',
                  web_port=8069,
                  web_custom_html=None):
@@ -32,6 +34,8 @@ class Config(object):
         self.force_version = force_version
         if force_version and not allow_serie:
             self.allow_serie = True
+        self.install_command = install_command
+        self.install_args = install_args
         self.web_host = web_host
         self.web_port = web_port
         self.web_custom_html = web_custom_html
@@ -54,6 +58,8 @@ class Config(object):
                    mode=args.mode,
                    allow_serie=args.allow_serie,
                    force_version=args.force_version,
+                   install_command=args.install_command,
+                   install_args=args.install_args,
                    web_host=args.web_host,
                    web_port=args.web_port,
                    web_custom_html=args.web_custom_html,
@@ -126,6 +132,25 @@ def get_args_parser():
                         default=os.environ.get('MARABUNTA_FORCE_VERSION'),
                         help='Force upgrade of a version, even if it has '
                              'already been applied.')
+
+    group_odoo = parser.add_argument_group(
+        title='Odoo',
+        description='Configuration related to odoo server command.',
+    )
+
+    group_odoo.add_argument('--install-command',
+                            action=EnvDefault,
+                            envvar='MARABUNTA_INSTALL_COMMAND',
+                            required=False,
+                            help="Odoo's executable")
+    group_odoo.add_argument('--install-args',
+                            action=EnvDefault,
+                            envvar='MARABUNTA_INSTALL_ARGS',
+                            required=False,
+                            help="Additional Odoo command arguments. "
+                                 "Form: '--log-level=debug' "
+                                 "Automatically added: "
+                                 "'--workers=0 --stop-after-init --no-xmlrpc'")
 
     group = parser.add_argument_group(
         title='Web',

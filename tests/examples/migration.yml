@@ -1,6 +1,7 @@
 migration:
   options:
     # --workers=0 --stop-after-init --no-xmlrpc are automatically added
+    # This options are overriden by corresponding command line arguments
     install_command: odoo
     install_args: --log-level=debug
   versions:
