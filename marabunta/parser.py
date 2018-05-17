@@ -123,10 +123,14 @@ class YamlParser(object):
         options = migration.get('options') or {}
         odoo_cmd = self.config.odoo_cmd or options.get('odoo_cmd')
         odoo_args = self.config.odoo_args or options.get('odoo_args') or ''
+        odoo_addons_path = (
+          self.config.odoo_addons_path or
+          options.get('odoo_addons_path') or '')
         odoo_dsn = Database(self.config).dsn()
         return MigrationOption(odoo_cmd=odoo_cmd,
                                odoo_args=odoo_args.split(),
-                               odoo_dsn=odoo_dsn)
+                               odoo_dsn=odoo_dsn,
+                               odoo_addons_path=odoo_addons_path)
 
     def _parse_versions(self, migration, options):
         versions = migration.get('versions') or []

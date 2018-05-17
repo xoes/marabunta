@@ -22,6 +22,9 @@ Unreleased
   This is a semantic change and also needed some code
   refactoring to reflect the new role of YamlParser.
 
+* Implement addons path option. Addons path could be passed thorugh
+  args but it would be very verbose, overshadowing the other args.
+
 **Bugfixes**
 
 * Include --no-xmlrpc in comments about autoflags

@@ -20,6 +20,7 @@ class Config(object):
                  force_version=None,
                  odoo_cmd=None,
                  odoo_args=None,
+                 odoo_addons_path=None,
                  web_host='localhost',
                  web_port=8069,
                  web_custom_html=None):
@@ -36,6 +37,7 @@ class Config(object):
             self.allow_serie = True
         self.odoo_cmd = odoo_cmd
         self.odoo_args = odoo_args
+        self.odoo_addons_path = odoo_addons_path
         self.web_host = web_host
         self.web_port = web_port
         self.web_custom_html = web_custom_html
@@ -60,6 +62,7 @@ class Config(object):
                    force_version=args.force_version,
                    odoo_cmd=args.odoo_cmd,
                    odoo_args=args.odoo_args,
+                   odoo_addons_path=args.odoo_addons_path,
                    web_host=args.web_host,
                    web_port=args.web_port,
                    web_custom_html=args.web_custom_html,
@@ -151,6 +154,11 @@ def get_args_parser():
                                  "Form: '--log-level=debug' "
                                  "Automatically added: "
                                  "'--workers=0 --stop-after-init --no-xmlrpc'")
+    group_odoo.add_argument('--odoo-addons-path',
+                            action=EnvDefault,
+                            envvar='MARABUNTA_ODOO_ADDONS_PATH',
+                            required=False,
+                            help="Odoo addons path, comma separated.")
 
     group = parser.add_argument_group(
         title='Web',

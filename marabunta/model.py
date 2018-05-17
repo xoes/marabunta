@@ -27,10 +27,13 @@ class Migration(object):
 
 class MigrationOption(object):
 
-    def __init__(self, odoo_cmd=None, odoo_args=None, odoo_dsn=None):
+    def __init__(
+            self, odoo_cmd=None, odoo_args=None,
+            odoo_dsn=None, odoo_addons_path=None):
         self.odoo_cmd = odoo_cmd or u'odoo'
         self.odoo_args = odoo_args or u''
         self.odoo_dsn = odoo_dsn or {}
+        self.odoo_addons_path = odoo_addons_path or u''
 
 
 class Version(object):
@@ -194,6 +197,9 @@ class AddonsOperation(object):
         odoo_cmd = self.options.odoo_cmd
         odoo_args = self.options.odoo_args[:] or []
         odoo_args += [u'--workers=0', u'--stop-after-init', u'--no-xmlrpc']
+        if self.options.odoo_addons_path:
+            odoo_args += [u'--addons-path={}'.format(
+                self.options.odoo_addons_path)]
 
         # DSN dict taken from marabunta's database object
         if self.options.odoo_dsn:
